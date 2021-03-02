@@ -2,7 +2,7 @@
  <div>
         <b-card bg-variant="dark" text-variant="white" title="REPORTE FÁCIL THS ">
       <b-card-text>
-        Bienvenido a tu reporte de profesional independiente. {{$route.params.id}}
+        Bienvenido a tu reporte de profesional independiente. 
       </b-card-text>
       <b-button style="margin: 10px" size="sm" variant="success" v-b-modal.modalInsercion  @click="SetBanderaFormulario(1)" class="bg-info text-white" >Ingresar Personal a reportar</b-button>
     </b-card>
@@ -42,7 +42,7 @@
             <td colspan="2">
  
                  <b-form-group id="group-0" label-for="input-0">
-                <b-input-group prepend="Es reporte de personal de apoyo logístico?:" class="mb-2 mr-sm-2 mb-sm-0"> 
+                <b-input-group prepend="Es reporte de personal de apoyo logístico?" class="mb-2 mr-sm-2 mb-sm-0"> 
                 <b-form-select
                 id="input-0"
                 name="input-0"
@@ -262,7 +262,7 @@
                 id="input-14"
                 name="input-14"
                 v-model="$v.form.cargo.$model"
-                :options="Cargo"
+                :options= this.LoadCargo
                 :state="validateState('cargo')"
                 aria-describedby="input-14-live-feedback"
                 ></b-form-select>
@@ -305,12 +305,14 @@
      </template>
     </b-table>
   </div> 
-  
-  <b-button variant="success" @click="EnviarPago()">Realiza el pago AQUI Y habilita el enlace de descarga</b-button>
-  <b-button style="margin: 10px" size="sm" variant="success" v-b-modal.modalInsercion  @click="SetBanderaFormulario(1)" class="bg-info text-white" >Ingresar Nuevo </b-button>
 
-      <div v-if="userLogged" class="mt-5">
-        <b-button size="sm" variant="outline-danger" class="mr-2" @click=DownloadFile()>descargar</b-button>
+    <b-button variant="success" @click="EnviarPago()">Realiza el pago AQUI Y habilita el enlace de descarga</b-button>
+    <b-button style="margin: 10px" size="sm" variant="success" v-b-modal.modalInsercion  @click="SetBanderaFormulario(1)" class="bg-info text-white" >Ingresar Nuevo </b-button>
+
+      <div v-if="this.CodTransaccion > 0"><b-alert show variant="info"> {{this.DescripcionTransaccion}}  </b-alert></div>
+
+    <div v-if="this.CodTransaccion == 1" class="mt-5">
+          <b-button size="sm" variant="warning" class="mr-2" @click=DownloadFile()>Descargue su archivo aquí</b-button>
     </div>
    
 
@@ -331,6 +333,7 @@ import Municipios from "../Data/Municipio.js";
 import Perfiles from "../Data/Perfiles.js";
 import Servicios from "../Data/Servicios.js";
 import Cargos from "../Data/Cargos.js";
+import CargosApoyo from "../Data/CargoApoyo.js";
 import { validationMixin } from "vuelidate";
 import auth from "@/auth";
 import {  required,  minLength,  alphaNum,  maxLength,  alpha,  numeric,} from "vuelidate/lib/validators";
@@ -342,10 +345,13 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
+        //Datos de la respuesta de la transaccion
+        CodTransaccion: null,
+        DescripcionTransaccion: null,      
        //URLactual: window.location,
        handler: ePayco.checkout.configure({
-        key: '45b960805ced5c27ce34b1600b4b9f54',
-        test: true
+        key: 'e380e55975399fc99bbb840df6e2311a',
+        test: false
       }), 
       data:{
           //Parametros compra (obligatorio)
@@ -353,7 +359,7 @@ export default {
           description: "Consultoria THS",
           invoice: "",
           currency: "cop",
-          amount: "50000",
+          amount: "5000",
           tax_base: "0",
           tax: "0",
           country: "co",
@@ -371,16 +377,18 @@ export default {
           response: "http://localhost:8080/#/regparticipante/",
 
           //Atributos cliente
-          name_billing: "Andres Perez",
-          address_billing: "Carrera 19 numero 14 91",
-          type_doc_billing: "cc",
-          mobilephone_billing: "3050000000",
-          number_doc_billing: "100000000",
+          name_billing: "",
+          address_billing: "",
+          type_doc_billing: "",
+          mobilephone_billing: "",
+          number_doc_billing: "",
 
          //atributo deshabilitación metodo de pago
-          methodsDisable: ["TDC", "PSE","SP","CASH","DP"]
+          //methodsDisable: ["TDC", "PSE","SP","CASH","DP"]
+          methodsDisable: []
 
           },
+      ref_payco:'',
       CatPersonasGrilla:null,
       PersonasEntidad:null,
       BandFormulario:null,
@@ -403,6 +411,8 @@ export default {
       Perfil: Perfiles,
       Servicio: Servicios,
       Cargo: Cargos,
+      CargoApoyo: CargosApoyo,
+      SelectCargo:null,
       AreaCovid: [
         { value: null, text: "Seleccione una opción" },
         { value: "01", text: "01 - ÁREA COVID" },
@@ -445,7 +455,7 @@ export default {
         cargo: null,
         indactualizacion: null,
         //status: null,
-        EsThs: null
+        EsThs: null,
       },
     };
   },
@@ -477,14 +487,23 @@ export default {
 
    mounted(){
      console.log("entro okkkkkkkkkkkkkkkkkkkkk")
-      this.getPersonas();     
+      this.getPersonas();  
+      this.getName();
+      this.getConsultaTransaccion();
+
   },  
 
   methods: {
+    getName(){
+      this.ref_payco = this.$route.query.ref_payco; 
+    //  console.log("wwwwwwwwwwwwwwwwwwwwwwwww:",this.ref_payco);
+
+    },
 
      EnviarPago(){
        console.log("Hola Pago")    
        this.handler.open(this.data)
+
      },
 
       DownloadFile(){
@@ -501,7 +520,7 @@ export default {
         if(day < 10){
           day = "0"+day        
          }       
-        this.FechaCorte = year + month + day 
+        this.FechaCorte = year +'-'+ month +'-'+ day 
         
         var RegControl = "1|PI|"+this.userLogged.entidad+"|"+this.FechaCorte+"|"+this.FechaCorte+"|"+this.CatPersonasGrilla+"\n"
         //this.PersonasEntidad[0].TipoRegistro+"|"+"1"+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].TipoId+"|"+this.PersonasEntidad[0].NroId+"|"+this.PersonasEntidad[0].PrimerApellido+"|"+this.PersonasEntidad[0].SegundoApellido+"|"+this.PersonasEntidad[0].PrimerNombre+"|"+this.PersonasEntidad[0].SegundoNombre+"|"+this.PersonasEntidad[0].CodigoMunicipio+"|"+this.PersonasEntidad[0].CodigoPerfil
@@ -542,11 +561,21 @@ export default {
       },
 
       getPersonas(){
-           console.log("hola persona")   
-      axios.get('http://138.197.99.56/talento-humanos?_sort=TipoRegistro').then (response =>{
+        axios.get('http://138.197.99.56/talento-humanos?_sort=TipoRegistro').then (response =>{
         this.PersonasEntidad = response.data;
         this.CodEnti = this.userLogged.entidad;
-        console.log(response.data)       
+        //console.log(response.data)       
+      })
+      .catch (e => console.log(e))
+    },
+
+    getConsultaTransaccion(){
+      //console.log("hola persona")   
+      axios.get('https://secure.epayco.co/validation/v1/reference/' + this.ref_payco).then (response =>{
+        this.CodTransaccion= response.data.data.x_cod_respuesta;
+        this.DescripcionTransaccion = response.data.data.x_response_reason_text;
+        //console.log("Respuesta del pago",response.data); 
+        //console.log("cantidada",response.data.data.x_response_reason_text);    
       })
       .catch (e => console.log(e))
     },
@@ -719,8 +748,27 @@ console.log("hola editar")
   computed: {
     userLogged() {       
       return auth.getUserLogged();
-    } 
+    },
+
+    LoadCargo(){
+
+     // console.log("this.CargoApoyo",this.CargoApoyo)
+      
+      if (this.$v.form.EsThs.$model == false){       
+        this.SelectCargo = this.Cargo;
+         //console.log("cargo THS:",this.SelectCargo )
+        return this.SelectCargo;
+      }
+      else{        
+        this.SelectCargo = this.CargoApoyo;
+        //console.log("cargo Apoyo:",this.SelectCargo)
+        return this.SelectCargo;
+      }
+    }
+
   },
+
+
   props: {
     msg: String
   },

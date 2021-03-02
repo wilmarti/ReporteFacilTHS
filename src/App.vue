@@ -92,7 +92,8 @@ export default {
       inmediate:true,
       handler(ref_payco){
         console.log(`ref_payco a cambiado:${ref_payco}`);
-        $route.params.id = `${ref_payco}`;
+        const valor =  `${ref_payco}`;
+        //$route.params.id = valor;
         //this.band = true;
         //console.log("this.band",this.band);
         //this.$router.push("/regparticipante/" + 1)
