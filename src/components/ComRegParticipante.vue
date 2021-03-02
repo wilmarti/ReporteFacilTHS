@@ -1,5 +1,7 @@
 <template>
  <div>
+
+   <!-- version 20210302 -->
         <b-card bg-variant="dark" text-variant="white" title="REPORTE FÁCIL THS ">
       <b-card-text>
         Bienvenido a tu reporte de profesional independiente. 
