@@ -361,7 +361,7 @@ export default {
           description: "Consultoria THS",
           invoice: "",
           currency: "cop",
-          amount: "5000",
+          amount: "50000",
           tax_base: "0",
           tax: "0",
           country: "co",
@@ -375,8 +375,8 @@ export default {
           extra1: "extra1",
           extra2: "extra2",
           extra3: "extra3",
-          confirmation: "http://localhost:8080/#/regparticipante/",
-          response: "http://localhost:8080/#/regparticipante/",
+          confirmation: "http://164.90.129.2/#/regparticipante/",
+          response: "http://164.90.129.2/#/regparticipante/",
 
           //Atributos cliente
           name_billing: "",
@@ -757,12 +757,12 @@ console.log("hola editar")
      // console.log("this.CargoApoyo",this.CargoApoyo)
       
       if (this.$v.form.EsThs.$model == false){       
-        this.SelectCargo = this.Cargo;
+        this.SelectCargo = this.CargoApoyo;
          //console.log("cargo THS:",this.SelectCargo )
         return this.SelectCargo;
       }
       else{        
-        this.SelectCargo = this.CargoApoyo;
+        this.SelectCargo = this.Cargo;
         //console.log("cargo Apoyo:",this.SelectCargo)
         return this.SelectCargo;
       }
