@@ -1,7 +1,7 @@
 <template>
  <div>
 
-   <!-- version 20210302 version 4 -->
+   <!-- version 20210302 version 4.0 -->
         <b-card bg-variant="dark" text-variant="white" title="REPORTE FÁCIL THS ">
       <b-card-text>
         Bienvenido a tu reporte de profesional independiente. 
@@ -13,7 +13,7 @@
     <thead>
         <tr>
              <p>
-                <b-alert show variant="danger">Entidad en session: {{userLogged.entidad}}</b-alert>
+                <b-alert show variant="danger">Entidad en session: {{userLogged.entidad + ' -- '+ this.NombreEntidad}}</b-alert>
             </p>
         </tr>
     </thead>
@@ -309,7 +309,7 @@
   </div> 
 
     <b-button variant="success" @click="EnviarPago()">Realiza el pago AQUI Y habilita el enlace de descarga</b-button>
-    <b-button style="margin: 10px" size="sm" variant="success" v-b-modal.modalInsercion  @click="SetBanderaFormulario(1)" class="bg-info text-white" >Ingresar Nuevo </b-button>
+    <b-button style="margin: 10px" size="sm" variant="success" v-b-modal.modalInsercion  @click="SetBanderaFormulario(1)" class="bg-info text-white" >Ingresar otra persona </b-button>
 
       <div v-if="this.CodTransaccion > 0"><b-alert show variant="info"> {{this.DescripcionTransaccion}}  </b-alert></div>
 
@@ -317,6 +317,10 @@
           <b-button size="sm" variant="warning" class="mr-2" @click=DownloadFile()>Descargue su archivo aquí</b-button>
     </div>
    
+    <div v-if="this.ConvenioPago == 'CNB' || this.ConvenioPago == 'CCO' " class="mt-5">
+          <b-button size="sm" variant="warning" class="mr-2" @click=DownloadFile()>Descargue su archivo aquí</b-button>
+    </div>
+
 
   <br/>
   <br/>
@@ -347,6 +351,8 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
+      ConvenioPago:null,
+      NombreEntidad:'',
         //Datos de la respuesta de la transaccion
         CodTransaccion: null,
         DescripcionTransaccion: null,      
@@ -492,7 +498,7 @@ export default {
       this.getPersonas();  
       this.getName();
       this.getConsultaTransaccion();
-
+      this.getDatosEntidad();
   },  
 
   methods: {
@@ -570,6 +576,15 @@ export default {
       })
       .catch (e => console.log(e))
     },
+
+      getDatosEntidad(){
+        axios.get('http://138.197.99.56/prestador/' + this.userLogged.entidad ).then (response =>{
+        this.NombreEntidad = response.data.Descripcion;
+        this.ConvenioPago = response.data.ConvenioPago;
+        //console.log("getDatosEntidad:",response.data.ConvenioPago)       
+      })
+      .catch (e => console.log(e))
+    },    
 
     getConsultaTransaccion(){
       //console.log("hola persona")   
