@@ -521,6 +521,7 @@ export default {
         let day = date.getDate()
         let month = date.getMonth() + 1
         let year = date.getFullYear()
+        
 
         if(month < 10){
           month = "0"+month
@@ -529,7 +530,8 @@ export default {
           day = "0"+day        
          }       
         this.FechaCorte = year +'-'+ month +'-'+ day 
-        
+        let FechaCorteSinGuion = year + month + day
+
         var RegControl = "1|PI|"+this.userLogged.entidad+"|"+this.FechaCorte+"|"+this.FechaCorte+"|"+this.CatPersonasGrilla+"\n"
         //this.PersonasEntidad[0].TipoRegistro+"|"+"1"+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].TipoId+"|"+this.PersonasEntidad[0].NroId+"|"+this.PersonasEntidad[0].PrimerApellido+"|"+this.PersonasEntidad[0].SegundoApellido+"|"+this.PersonasEntidad[0].PrimerNombre+"|"+this.PersonasEntidad[0].SegundoNombre+"|"+this.PersonasEntidad[0].CodigoMunicipio+"|"+this.PersonasEntidad[0].CodigoPerfil
         //+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].NombreEntidad+"|"+this.PersonasEntidad[0].CodigoServicio+"|"+this.PersonasEntidad[0].CodigoAreaCovid+"|"+this.PersonasEntidad[0].CodigoDedicacion+"|"+this.PersonasEntidad[0].CodigoCargo+"|"+this.PersonasEntidad[0].IndicadorActualizacion
@@ -561,7 +563,7 @@ export default {
  */
         var cadena = new String(DatosArchivo);
 
-        download(cadena.replace(/,/g,""), "THS310COVI"+this.FechaCorte+"PI"+this.userLogged.entidad+".txt", "text/plain");
+        download(cadena.replace(/,/g,""), "THS310COVI"+FechaCorteSinGuion+"PI"+this.userLogged.entidad+".txt", "text/plain");
       },
 
       SetBanderaFormulario(valor){
@@ -577,7 +579,7 @@ export default {
       .catch (e => console.log(e))
     },
 
-      getDatosEntidad(){
+    getDatosEntidad(){
         axios.get('http://138.197.99.56/prestador/' + this.userLogged.entidad ).then (response =>{
         this.NombreEntidad = response.data.Descripcion;
         this.ConvenioPago = response.data.ConvenioPago;
