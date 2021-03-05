@@ -351,6 +351,7 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
+      CantidadRegistros:0,
       ConvenioPago:null,
       NombreEntidad:'',
         //Datos de la respuesta de la transaccion
@@ -521,7 +522,8 @@ export default {
         let day = date.getDate()
         let month = date.getMonth() + 1
         let year = date.getFullYear()
-        
+        let EntidadconDiez = this.userLogged.entidad.substring(1,10);
+        this.CantidadRegistros = this.PersonasEntidad.filter((item) => item.CodigoEntidad == this.userLogged.entidad).length;
 
         if(month < 10){
           month = "0"+month
@@ -532,7 +534,7 @@ export default {
         this.FechaCorte = year +'-'+ month +'-'+ day 
         let FechaCorteSinGuion = year + month + day
 
-        var RegControl = "1|PI|"+this.userLogged.entidad+"|"+this.FechaCorte+"|"+this.FechaCorte+"|"+this.CatPersonasGrilla+"\n"
+        var RegControl = "1|PI|"+"00"+EntidadconDiez+"|"+this.FechaCorte+"|"+this.FechaCorte+"|"+this.CatPersonasGrilla+"\n"
         //this.PersonasEntidad[0].TipoRegistro+"|"+"1"+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].TipoId+"|"+this.PersonasEntidad[0].NroId+"|"+this.PersonasEntidad[0].PrimerApellido+"|"+this.PersonasEntidad[0].SegundoApellido+"|"+this.PersonasEntidad[0].PrimerNombre+"|"+this.PersonasEntidad[0].SegundoNombre+"|"+this.PersonasEntidad[0].CodigoMunicipio+"|"+this.PersonasEntidad[0].CodigoPerfil
         //+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].NombreEntidad+"|"+this.PersonasEntidad[0].CodigoServicio+"|"+this.PersonasEntidad[0].CodigoAreaCovid+"|"+this.PersonasEntidad[0].CodigoDedicacion+"|"+this.PersonasEntidad[0].CodigoCargo+"|"+this.PersonasEntidad[0].IndicadorActualizacion
 
@@ -543,27 +545,30 @@ export default {
         let SNombreNull = "";
         DatosArchivo.push(RegControl);	
         var consecutivo = 1;
-
-
+        let cant = this.CantidadRegistros;
+      
         this.PersonasEntidad.filter((item) => item.CodigoEntidad == this.userLogged.entidad).forEach(function(a){
             if(a["SegundoApellido"] != null) SApellidoSinNull = a["SegundoApellido"]; else SApellidoSinNull = "";
             if(a["SegundoNombre"] != null) SNombreNull = a["SegundoNombre"]; else SNombreNull = "";
-            
-            str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["CodigoCargo"]+"|"+a["IndicadorActualizacion"] +'\n'
+           
+            if(consecutivo < cant)
+            {
+              if(a["TipoRegistro"] == '2')
+              str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoPerfil"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["CodigoCargo"]+"|"+a["IndicadorActualizacion"] +'\n';
+              else
+              str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoCargo"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["IndicadorActualizacion"] +'\n';
+            }else{
+              if(a["TipoRegistro"] == '2')
+              str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoPerfil"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["CodigoCargo"]+"|"+a["IndicadorActualizacion"];
+              else
+              str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoCargo"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["IndicadorActualizacion"];
+            }
             DatosArchivo.push(str)
             consecutivo= consecutivo + 1;
-
         });
-/* 
-        var cadena = new String(DatosArchivo);
-        DatosArchivo.forEach(function(a){
-            cadena = a[0]
-            cadena.replace(",","xxxx");
-        });
- */
-        var cadena = new String(DatosArchivo);
 
-        download(cadena.replace(/,/g,""), "THS310COVI"+FechaCorteSinGuion+"PI"+this.userLogged.entidad+".txt", "text/plain");
+        var cadena = new String(DatosArchivo);
+        download(cadena.replace(/,/g,""), "THS310COVI"+FechaCorteSinGuion+"PI"+"00"+EntidadconDiez+".txt", "text/plain");
       },
 
       SetBanderaFormulario(valor){
