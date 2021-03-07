@@ -1,7 +1,7 @@
 <template>
  <div>
 
-   <!-- version 20210302 version 4.0 -->
+   <!-- version 20210302 version 5 -->
         <b-card bg-variant="dark" text-variant="white" title="REPORTE FÁCIL THS ">
       <b-card-text>
         Bienvenido a tu reporte de profesional independiente. 
@@ -522,7 +522,8 @@ export default {
         let day = date.getDate()
         let month = date.getMonth() + 1
         let year = date.getFullYear()
-        let EntidadconDiez = this.userLogged.entidad.substring(1,10);
+        let EntidadconDiez = this.userLogged.entidad.substring(0,10);
+        console.log("EntidadconDiez:",EntidadconDiez)
         this.CantidadRegistros = this.PersonasEntidad.filter((item) => item.CodigoEntidad == this.userLogged.entidad).length;
 
         if(month < 10){
