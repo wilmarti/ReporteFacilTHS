@@ -535,7 +535,7 @@ export default {
         this.FechaCorte = year +'-'+ month +'-'+ day 
         let FechaCorteSinGuion = year + month + day
 
-        var RegControl = "1|PI|"+"00"+EntidadconDiez+"|"+this.FechaCorte+"|"+this.FechaCorte+"|"+this.CatPersonasGrilla+"\n"
+        var RegControl = "1|PI|"+EntidadconDiez+"|"+this.FechaCorte+"|"+this.FechaCorte+"|"+this.CatPersonasGrilla+'\r\n'
         //this.PersonasEntidad[0].TipoRegistro+"|"+"1"+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].TipoId+"|"+this.PersonasEntidad[0].NroId+"|"+this.PersonasEntidad[0].PrimerApellido+"|"+this.PersonasEntidad[0].SegundoApellido+"|"+this.PersonasEntidad[0].PrimerNombre+"|"+this.PersonasEntidad[0].SegundoNombre+"|"+this.PersonasEntidad[0].CodigoMunicipio+"|"+this.PersonasEntidad[0].CodigoPerfil
         //+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].NombreEntidad+"|"+this.PersonasEntidad[0].CodigoServicio+"|"+this.PersonasEntidad[0].CodigoAreaCovid+"|"+this.PersonasEntidad[0].CodigoDedicacion+"|"+this.PersonasEntidad[0].CodigoCargo+"|"+this.PersonasEntidad[0].IndicadorActualizacion
 
@@ -555,9 +555,9 @@ export default {
             if(consecutivo < cant)
             {
               if(a["TipoRegistro"] == '2')
-              str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoPerfil"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["CodigoCargo"]+"|"+a["IndicadorActualizacion"] +'\n';
+              str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoPerfil"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["CodigoCargo"]+"|"+a["IndicadorActualizacion"] +'\r\n';
               else
-              str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoCargo"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["IndicadorActualizacion"] +'\n';
+              str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoCargo"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["IndicadorActualizacion"] +'\r\n';
             }else{
               if(a["TipoRegistro"] == '2')
               str=a["TipoRegistro"]+"|"+consecutivo+"|"+a["TipoId"]+"|"+a["NroId"]+"|"+a["PrimerApellido"]+"|"+SApellidoSinNull+"|"+a["PrimerNombre"]+"|"+SNombreNull+"|"+a["CodigoMunicipio"]+"|"+a["CodigoPerfil"]+"|"+a["CodigoEntidad"]+"|"+a["NombreEntidad"]+"|"+a["CodigoServicio"]+"|"+a["CodigoAreaCovid"]+"|"+a["CodigoDedicacion"]+"|"+a["CodigoCargo"]+"|"+a["IndicadorActualizacion"];
