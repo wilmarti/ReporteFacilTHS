@@ -23,6 +23,7 @@
     </div>
 
     </b-jumbotron>
+    <ComVideos></ComVideos>
 </div>
 
 </template>
@@ -30,6 +31,7 @@
 
 <script>
 import auth from "@/auth";
+import ComVideos from '@/components/ComVideos.vue'
 
 export default {
   name: 'Home',
@@ -37,7 +39,10 @@ export default {
     userLogged() {
       return auth.getUserLogged();
     }
-}
+},
+   components: {
+    ComVideos
+  }
 }
 </script>
 
