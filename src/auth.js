@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 //const ENDPOINT_PATH = "https://reqres.in/api/";
-const ENDPOINT_PATH = "http://138.197.99.56/auth/local";
+const ENDPOINT_PATH = "https://www.reportafacilthsapi.xyz/auth/local";
 
 export default {
     setUserLogged(userLogged) {
@@ -58,7 +58,7 @@ export default {
 
           const Key = 'Bearer ' + this.getUserLogged().token;
           
-          return axios.post('http://138.197.99.56/talento-humanos', persona, {
+          return axios.post('https://www.reportafacilthsapi.xyz/talento-humanos', persona, {
             headers: {
               Authorization: Key
                 //'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjEzNTk1NDk5LCJleHAiOjE2MTYxODc0OTl9.j83SNfgJfYBHmkJVbdqGVMWImjwtn19abn-kiN2F_iI',
@@ -84,7 +84,7 @@ export default {
     updatePersona(persona,id) {
       const Key = 'Bearer ' + this.getUserLogged().token;
      
-      return axios.put('http://138.197.99.56/talento-humanos/'+id, persona, {
+      return axios.put('https://www.reportafacilthsapi.xyz/talento-humanos/'+id, persona, {
         headers: {
           Authorization: Key
             //'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjEzNTk1NDk5LCJleHAiOjE2MTYxODc0OTl9.j83SNfgJfYBHmkJVbdqGVMWImjwtn19abn-kiN2F_iI',
@@ -109,7 +109,7 @@ export default {
     EliminarPersona(id){
       
       const Key = 'Bearer ' + this.getUserLogged().token;
-      return axios.delete('http://138.197.99.56/talento-humanos/' + id, {
+      return axios.delete('https://www.reportafacilthsapi.xyz/talento-humanos/' + id, {
         headers: {
           Authorization: Key
             //'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjEzNTk1NDk5LCJleHAiOjE2MTYxODc0OTl9.j83SNfgJfYBHmkJVbdqGVMWImjwtn19abn-kiN2F_iI',
@@ -132,7 +132,7 @@ export default {
     ConsultaExisteEntidad(codigo){
       console.log("Hola care bola", codigo);
 
-      return axios.get('http://138.197.99.56/prestador/' + codigo).then(response => {
+      return axios.get('https://www.reportafacilthsapi.xyz/prestador/' + codigo).then(response => {
 
           console.log("esta es la data",response.data)
           // Handle success.

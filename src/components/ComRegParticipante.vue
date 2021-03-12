@@ -577,7 +577,7 @@ export default {
       },
 
       getPersonas(){
-        axios.get('http://138.197.99.56/talento-humanos?_sort=TipoRegistro').then (response =>{
+        axios.get('https://www.reportafacilthsapi.xyz/talento-humanos?_sort=TipoRegistro').then (response =>{
         this.PersonasEntidad = response.data;
         this.CodEnti = this.userLogged.entidad;
         //console.log(response.data)       
@@ -586,7 +586,7 @@ export default {
     },
 
     getDatosEntidad(){
-        axios.get('http://138.197.99.56/prestador/' + this.userLogged.entidad ).then (response =>{
+        axios.get('https://www.reportafacilthsapi.xyz/prestador/' + this.userLogged.entidad ).then (response =>{
         this.NombreEntidad = response.data.Descripcion;
         this.ConvenioPago = response.data.ConvenioPago;
         //console.log("getDatosEntidad:",response.data.ConvenioPago)       
