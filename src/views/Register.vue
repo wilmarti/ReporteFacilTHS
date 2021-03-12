@@ -73,7 +73,7 @@ export default {
   methods: {
     async register() {
 
-        await axios.get('http://138.197.99.56/prestador/' + this.CodigoHabilitacion)
+        await axios.get('https://www.reportafacilthsapi.xyz/prestador/' + this.CodigoHabilitacion)
         .then(response => {
               this.ExisteCodigo = 1;
         })
@@ -96,7 +96,7 @@ console.log("ExisteCodigo:",this.ExisteCodigo);
              const CodigoHabilitacion = this.CodigoHabilitacion
         
                 const user = {username,email, password,CodigoHabilitacion};
-                axios.post("http://138.197.99.56/auth/local/register", user)
+                axios.post("https://www.reportafacilthsapi.xyz/auth/local/register", user)
                 .then(response => {
                   console.log('entro por el ok');
                   console.log("Registro correcto")
