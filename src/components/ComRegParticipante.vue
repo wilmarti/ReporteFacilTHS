@@ -368,7 +368,7 @@ export default {
           description: "Consultoria THS",
           invoice: "",
           currency: "cop",
-          amount: "50000",
+          amount: "5000",
           tax_base: "0",
           tax: "0",
           country: "co",
