@@ -382,8 +382,8 @@ export default {
           extra1: "extra1",
           extra2: "extra2",
           extra3: "extra3",
-          confirmation: "http://164.90.129.2/#/regparticipante/",
-          response: "http://164.90.129.2/#/regparticipante/",
+          confirmation: "https://www.reportafacilths.com/#/regparticipante",
+          response: "https://www.reportafacilths.com/#/regparticipante",
 
           //Atributos cliente
           name_billing: "",
