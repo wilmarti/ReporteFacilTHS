@@ -382,8 +382,10 @@ export default {
           extra1: "extra1",
           extra2: "extra2",
           extra3: "extra3",
-          confirmation: "https://www.reportafacilths.com/#/regparticipante",
-          response: "https://www.reportafacilths.com/#/regparticipante",
+          //confirmation: "http://localhost:8080/#/regparticipante",
+          //response: "http://localhost:8080/#/regparticipante",
+          confirmation: "https://www.reportafacilths.com/regparticipante",
+          response: "https://www.reportafacilths.com/regparticipante",
 
           //Atributos cliente
           name_billing: "",
@@ -505,7 +507,7 @@ export default {
   methods: {
     getName(){
       this.ref_payco = this.$route.query.ref_payco; 
-    //  console.log("wwwwwwwwwwwwwwwwwwwwwwwww:",this.ref_payco);
+      console.log("wwwwwwwwwwwwwwwwwwwwwwwww:",this.ref_payco);
 
     },
 
@@ -577,6 +579,7 @@ export default {
       },
 
       getPersonas(){
+        console.log("hola mle")
         axios.get('https://www.reportafacilthsapi.xyz/talento-humanos?_sort=TipoRegistro').then (response =>{
         this.PersonasEntidad = response.data;
         this.CodEnti = this.userLogged.entidad;
@@ -595,12 +598,12 @@ export default {
     },    
 
     getConsultaTransaccion(){
-      //console.log("hola persona")   
+      console.log("hola getConsultaTransaccion")   
       axios.get('https://secure.epayco.co/validation/v1/reference/' + this.ref_payco).then (response =>{
         this.CodTransaccion= response.data.data.x_cod_respuesta;
         this.DescripcionTransaccion = response.data.data.x_response_reason_text;
-        //console.log("Respuesta del pago",response.data); 
-        //console.log("cantidada",response.data.data.x_response_reason_text);    
+        console.log("Respuesta del pago",response.data); 
+        console.log("cantidada",response.data.data.x_response_reason_text);    
       })
       .catch (e => console.log(e))
     },
