@@ -106,6 +106,33 @@ export default {
       });    
 },
 
+updateEntidadPago(persona,id) {
+  const Key = 'Bearer ' + this.getUserLogged().token;
+ 
+  return axios.put('https://www.reportafacilthsapi.xyz/prestadors/'+id, persona, {
+    headers: {
+      Authorization: Key
+        //'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjEzNTk1NDk5LCJleHAiOjE2MTYxODc0OTl9.j83SNfgJfYBHmkJVbdqGVMWImjwtn19abn-kiN2F_iI',
+    },
+  }) 
+  .then(response => {
+    // Handle success.
+/*       console.log('Well done!');
+    console.log('User profile', response); */
+    alert("Registro Actualizado correctamente.")
+    
+  })
+  .catch(error => {
+    // Handle error.
+    if( error.response.data.statusCode == 500){
+      alert("Imposible actualizar el registro, revise que la identificacion no este repetida.")
+    }
+    console.log('An error occurred:', error.response);
+  });    
+},
+
+
+
     EliminarPersona(id){
       
       const Key = 'Bearer ' + this.getUserLogged().token;

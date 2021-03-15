@@ -317,9 +317,11 @@
           <b-button size="sm" variant="warning" class="mr-2" @click=DownloadFile()>Descargue su archivo aquí</b-button>
     </div>
    
-    <div v-if="this.ConvenioPago == 'CNB' || this.ConvenioPago == 'CCO' " class="mt-5">
+    <div v-if="this.ConvenioPago == 'CNB' || this.ConvenioPago == 'CCO' || this.ConvenioPago == 'PAGO' " class="mt-5">
           <b-button size="sm" variant="warning" class="mr-2" @click=DownloadFile()>Descargue su archivo aquí</b-button>
     </div>
+
+    {{this.ConvenioPago}}
 
 
   <br/>
@@ -351,6 +353,7 @@ export default {
   mixins: [validationMixin],
   data() {
     return {
+      idPersona:null,
       CantidadRegistros:0,
       ConvenioPago:null,
       NombreEntidad:'',
@@ -368,7 +371,7 @@ export default {
           description: "Consultoria THS",
           invoice: "",
           currency: "cop",
-          amount: "5000",
+          amount: "50000",
           tax_base: "0",
           tax: "0",
           country: "co",
@@ -382,10 +385,10 @@ export default {
           extra1: "extra1",
           extra2: "extra2",
           extra3: "extra3",
-          //confirmation: "http://localhost:8080/#/regparticipante",
-          //response: "http://localhost:8080/#/regparticipante",
-          confirmation: "https://www.reportafacilths.com/#/regparticipante",
-          response: "https://www.reportafacilths.com/#/regparticipante",
+          confirmation: "http://localhost:8080/#/regparticipante",
+          response: "http://localhost:8080/#/regparticipante",
+          //confirmation: "https://www.reportafacilths.com/#/regparticipante",
+          //response: "https://www.reportafacilths.com/#/regparticipante",
 
           //Atributos cliente
           name_billing: "",
@@ -579,16 +582,19 @@ export default {
       },
 
       getPersonas(){
-        console.log("hola mle")
         axios.get('https://www.reportafacilthsapi.xyz/talento-humanos?_sort=TipoRegistro').then (response =>{
         this.PersonasEntidad = response.data;
         this.CodEnti = this.userLogged.entidad;
-        //console.log(response.data)       
+        //this.idPersona = response.data.id;
+        //console.log("wiwiwiwiwiwiwiwiiwiwiwiiwi",response.data) 
+        //console.log("yeyeyeyeyeyeyeyeyeye",response.data.id) 
+              
       })
       .catch (e => console.log(e))
     },
 
     getDatosEntidad(){
+        console.log("Hola getDatosEntidad",this.userLogged.entidad)
         axios.get('https://www.reportafacilthsapi.xyz/prestador/' + this.userLogged.entidad ).then (response =>{
         this.NombreEntidad = response.data.Descripcion;
         this.ConvenioPago = response.data.ConvenioPago;
@@ -598,18 +604,30 @@ export default {
     },    
 
     getConsultaTransaccion(){
-      console.log("hola getConsultaTransaccion")   
+      console.log("hola getConsultaTransaccion2222")   
       axios.get('https://secure.epayco.co/validation/v1/reference/' + this.ref_payco).then (response =>{
         this.CodTransaccion= response.data.data.x_cod_respuesta;
         this.DescripcionTransaccion = response.data.data.x_response_reason_text;
-        console.log("Respuesta del pago",response.data); 
-        console.log("cantidada",response.data.data.x_response_reason_text);    
+        //console.log("esta es wicho:",this.CodTransaccion)
+
+        if(this.CodTransaccion == 1){
+              axios.get('https://www.reportafacilthsapi.xyz/prestador/' + this.userLogged.entidad).then (response =>{
+                this.idPersona= response.data.id;
+                const conveniopago = {
+                      ConvenioPago: "PAGO"
+                   }   
+                    auth.updateEntidadPago(conveniopago,this.idPersona);
+                    //this.ConvenioPago = 
+                    //console.log("esta es la persona:",response.data.id)
+              })
+              .catch (e => console.log(e))         
+        }
       })
       .catch (e => console.log(e))
     },
 
-    async EliminarParticipante(id){
 
+    async EliminarParticipante(id){
       if(confirm("¿Seguro que desea Eliminar?")){
              try {
               await auth.EliminarPersona(id);
