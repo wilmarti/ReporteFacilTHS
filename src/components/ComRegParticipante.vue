@@ -1,7 +1,7 @@
 <template>
  <div>
 
-   <!-- version 20210302 version 1.4 -->
+   <!-- version 20210302 version 1.5 -->
         <b-card bg-variant="dark" text-variant="white" title="REPORTE FÁCIL THS ">
       <b-card-text>
         Bienvenido a tu reporte de profesional independiente. 
@@ -371,7 +371,7 @@ export default {
           description: "Consultoria THS",
           invoice: "",
           currency: "cop",
-          amount: "5000",
+          amount: "50000",
           tax_base: "0",
           tax: "0",
           country: "co",
