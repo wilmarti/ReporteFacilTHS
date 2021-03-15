@@ -1,7 +1,7 @@
 <template>
  <div>
 
-   <!-- version 20210302 version 1.3 -->
+   <!-- version 20210302 version 1.4 -->
         <b-card bg-variant="dark" text-variant="white" title="REPORTE FÁCIL THS ">
       <b-card-text>
         Bienvenido a tu reporte de profesional independiente. 
@@ -389,6 +389,7 @@ export default {
           //response: "http://localhost:8080/#/regparticipante",
           confirmation: "https://www.reportafacilths.com/#/regparticipante",
           response: "https://www.reportafacilths.com/#/regparticipante",
+
 
           //Atributos cliente
           name_billing: "",
