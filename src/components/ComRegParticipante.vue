@@ -384,8 +384,8 @@ export default {
           extra3: "extra3",
           //confirmation: "http://localhost:8080/#/regparticipante",
           //response: "http://localhost:8080/#/regparticipante",
-          confirmation: "https://www.reportafacilths.com/regparticipante",
-          response: "https://www.reportafacilths.com/regparticipante",
+          confirmation: "https://www.reportafacilths.com/#/regparticipante",
+          response: "https://www.reportafacilths.com/#/regparticipante",
 
           //Atributos cliente
           name_billing: "",
