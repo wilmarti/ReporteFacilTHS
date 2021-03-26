@@ -16,6 +16,9 @@
                 <b-alert show variant="danger">Entidad en session: {{userLogged.entidad + ' -- '+ this.NombreEntidad}}</b-alert>
             </p>
         </tr>
+        <tr>
+          <h3>Total Registros: {{this.PersonasEntidad.length}}</h3>
+        </tr>
     </thead>
     </table> 
   
@@ -298,9 +301,8 @@
     </b-modal>
  </div> 
 
-
    <div>
-    <b-table striped hover responsive sticky-header head-variant="light" :items="LlenarGrillaPersonas()" :fields="fields">
+    <b-table striped hover responsive sticky-header head-variant="light" :items="this.PersonasEntidad" :fields="fields">
      <template v-slot:cell(Acciones_de_tabla)="data" >
        <b-button size="sm" variant="outline-danger" class="mr-2" @click=EliminarParticipante(data.item.id)>Eliminar</b-button>
        <b-button size="sm" variant="outline-success" v-b-modal.modalInsercion class="mr-2" @click="EditarParticipante(data.item.id,data.item.TipoRegistro,data.item.TipoId,data.item.NroId,data.item.PrimerApellido,data.item.SegundoApellido,data.item.PrimerNombre,data.item.SegundoNombre,data.item.CodigoMunicipio,data.item.CodigoPerfil,data.item.CodigoEntidad,data.item.NombreEntidad,data.item.CodigoServicio,data.item.CodigoAreaCovid,data.item.CodigoDedicacion,data.item.CodigoCargo,data.item.IndicadorActualizacion,data.item.FechaCorte,2)" >Editar</b-button>
@@ -501,8 +503,8 @@ export default {
   },
 
    mounted(){
-     console.log("entro okkkkkkkkkkkkkkkkkkkkk")
-      this.getPersonas();  
+     this.LlenarGrillaPersonas()
+      //this.getPersonas();  
       this.getName();
       this.getConsultaTransaccion();
       this.getDatosEntidad();
@@ -646,7 +648,6 @@ export default {
     },
 
     async EditarParticipante(Pid,PTipoRegistro,PTipoId,PNroId,PPrimerApellido,PSegundoApellido,PPrimerNombre,PSegundoNombre,PCodigoMunicipio,PCodigoPerfil,PCodigoEntidad,PNombreEntidad,PCodigoServicio,PCodigoAreaCovid,PCodigoDedicacion,PCodigoCargo,PIndicadorActualizacion,PFechaCorte,TipoForm){
-console.log("hola editar")
     if(PTipoRegistro == 2){
       PTipoRegistro = true
     }else
@@ -678,11 +679,21 @@ console.log("hola editar")
 
 
      LlenarGrillaPersonas() {  
-      //console.log("LlenarGrillaPersonas:")
-      if(this.PersonasEntidad != null){        
-        this.CatPersonasGrilla = this.PersonasEntidad.filter((item) => item.CodigoEntidad == this.userLogged.entidad).length
-      return this.PersonasEntidad.filter((item) => item.CodigoEntidad == this.userLogged.entidad);
-      }
+      console.log("LlenarGrillaPersonas:",this.userLogged.entidad)
+        
+        axios.get('https://www.reportafacilthsapi.xyz/talento-humanos?CodigoEntidad=' + this.userLogged.entidad).then (response =>{
+        this.PersonasEntidad = response.data;
+        this.CodEnti = this.userLogged.entidad; 
+        return this.PersonasEntidad
+        //console.log ("this.PersonasEntidad",this.PersonasEntidad)      
+      })
+      .catch (e => console.log(e))
+
+/*         this.CatPersonasGrilla = this.PersonasEntidad.filter((item) => item.CodigoEntidad == this.userLogged.entidad).length
+        console.log("this.CatPersonasGrilla:",this.CatPersonasGrilla)
+        console.log("LlenarGrillaPersonas:",this.PersonasEntidad.filter((item) => item.CodigoEntidad == this.userLogged.entidad))
+        console.log("LlenarGrillaPersonas:",this.userLogged.entidad)
+      return this.PersonasEntidad.filter((item) => item.CodigoEntidad == this.userLogged.entidad); */
     },
 
 
