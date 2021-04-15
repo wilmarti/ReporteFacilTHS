@@ -302,7 +302,7 @@
  </div> 
 
    <div>
-    <b-table striped hover responsive sticky-header head-variant="light" :items="this.PersonasEntidad" :fields="fields">
+    <b-table striped hover responsive sticky-header head-variant="light" :items="LlenarGrillaPersonas" :fields="fields">
      <template v-slot:cell(Acciones_de_tabla)="data" >
        <b-button size="sm" variant="outline-danger" class="mr-2" @click=EliminarParticipante(data.item.id)>Eliminar</b-button>
        <b-button size="sm" variant="outline-success" v-b-modal.modalInsercion class="mr-2" @click="EditarParticipante(data.item.id,data.item.TipoRegistro,data.item.TipoId,data.item.NroId,data.item.PrimerApellido,data.item.SegundoApellido,data.item.PrimerNombre,data.item.SegundoNombre,data.item.CodigoMunicipio,data.item.CodigoPerfil,data.item.CodigoEntidad,data.item.NombreEntidad,data.item.CodigoServicio,data.item.CodigoAreaCovid,data.item.CodigoDedicacion,data.item.CodigoCargo,data.item.IndicadorActualizacion,data.item.FechaCorte,2)" >Editar</b-button>
@@ -503,13 +503,13 @@ export default {
   },
 
    mounted(){
-     this.LlenarGrillaPersonas()
+//     this.LlenarGrillaPersonas()
       //this.getPersonas();  
       this.getName();
       this.getConsultaTransaccion();
       this.getDatosEntidad();
+      this.LlenarGrillaPersonasMethod() ;
   },  
-  
 
   methods: {
     getName(){
@@ -542,7 +542,7 @@ export default {
         this.FechaCorte = year +'-'+ month +'-'+ day 
         let FechaCorteSinGuion = year + month + day
 
-        var RegControl = "1|PI|"+EntidadconDiez+"|"+this.FechaCorte+"|"+this.FechaCorte+"|"+this.PersonasEntidad.length +'\r\n'
+        var RegControl = "1|PI|"+EntidadconDiez+"|"+this.FechaCorte+"|"+this.FechaCorte+"|"+this.CatPersonasGrilla+'\r\n'
         //this.PersonasEntidad[0].TipoRegistro+"|"+"1"+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].TipoId+"|"+this.PersonasEntidad[0].NroId+"|"+this.PersonasEntidad[0].PrimerApellido+"|"+this.PersonasEntidad[0].SegundoApellido+"|"+this.PersonasEntidad[0].PrimerNombre+"|"+this.PersonasEntidad[0].SegundoNombre+"|"+this.PersonasEntidad[0].CodigoMunicipio+"|"+this.PersonasEntidad[0].CodigoPerfil
         //+"|"+this.PersonasEntidad[0].CodigoEntidad+"|"+this.PersonasEntidad[0].NombreEntidad+"|"+this.PersonasEntidad[0].CodigoServicio+"|"+this.PersonasEntidad[0].CodigoAreaCovid+"|"+this.PersonasEntidad[0].CodigoDedicacion+"|"+this.PersonasEntidad[0].CodigoCargo+"|"+this.PersonasEntidad[0].IndicadorActualizacion
 
@@ -675,7 +675,7 @@ export default {
     },
 
 
-     LlenarGrillaPersonas() {  
+      LlenarGrillaPersonasMethod() {  
        
         axios.get('https://www.reportafacilthsapi.xyz/talento-humanos?CodigoEntidad=' + this.userLogged.entidad).then (response =>{
         this.PersonasEntidad = response.data;
@@ -684,7 +684,7 @@ export default {
         //console.log ("this.PersonasEntidad",this.PersonasEntidad)      
       })
       .catch (e => console.log(e))
-    },
+    }, 
 
 
     validateState(name) {
@@ -794,6 +794,20 @@ export default {
     },
   },
   computed: {
+
+     LlenarGrillaPersonas() {  
+       
+        axios.get('https://www.reportafacilthsapi.xyz/talento-humanos?CodigoEntidad=' + this.userLogged.entidad).then (response =>{
+        this.PersonasEntidad = response.data;
+        this.CodEnti = this.userLogged.entidad; 
+        return this.PersonasEntidad
+        console.log ("this.PersonasEntidad",this.PersonasEntidad)      
+      })
+      .catch (e => console.log(e))
+
+      return this.PersonasEntidad
+    },
+
     userLogged() {       
       return auth.getUserLogged();
     },
